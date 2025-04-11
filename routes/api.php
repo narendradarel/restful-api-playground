@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
-
+use App\Http\Controllers\Api\ApiController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,3 +20,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('/students', StudentController::class);
+
+//API Authentication
+Route::post('/register', [ApiController::class, 'register']);
+Route::post('/login', [ApiController::class, 'login']);
+Route::middleware('auth:api')->group(function () {
+    Route::get('/profile', [ApiController::class, 'profile']);
+    Route::post('/refresh-token', [ApiController::class, 'refreshToken']);
+    Route::post('/logout', [ApiController::class, 'logout']);
+});
